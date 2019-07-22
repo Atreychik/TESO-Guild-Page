@@ -1,0 +1,46 @@
+.navigation {
+  overflow: hidden;
+  position: sticky;
+  top: .5vh;
+  border-radius: .5rem;
+  background: linear-gradient(#202020 0%, #303030 20%, #303030 80%, #202020 100%);
+  box-shadow: -.3rem .3rem .5rem .1rem #000;
+
+  &__list {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    &:last-child {
+      margin-left: auto;
+    }
+  }
+
+  &__link {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 1rem 2rem;
+
+    &_discord {
+      padding: 0 2rem;
+      display: flex;
+      height: 100%;
+      align-items: center;
+    }
+
+    &-image {
+      margin-left: 1rem;
+      height: 3rem;
+    }
+    
+    &:hover,
+    &_active {
+      transition: background-color .5s;
+      background-color: #E83E26;
+    }
+  }
+}

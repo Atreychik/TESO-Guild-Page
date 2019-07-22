@@ -10,13 +10,13 @@ class App extends Component {
     const history = createBrowserHistory()
 
     return (
-      <Layout>
-        <Router history={history}>
+      <Router history={history}>
+        <Layout>
           <Switch>
             <Route exact path='/' component={Dashboard} />
           </Switch>
-        </Router>
-      </Layout>
+        </Layout>
+      </Router>
     )
   }
 }
