@@ -1,0 +1,88 @@
+.header {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  max-width: 100vw;
+  height: 100vh;
+
+  &__logo {
+    position: relative;
+    top: 5vh;
+    margin: 0;
+    padding: 0;
+
+    &-image {
+      width: 100vw;
+      max-width: 60rem;
+    }
+  }
+
+  &__guild {
+    text-shadow: .1rem .1rem 2rem #000; 
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 6vh;
+
+    &-string {
+      display: block;
+
+      &_lower {
+        margin: 1rem;
+        font-size: 3vh;
+      }
+    }
+  }
+
+  &__arrow {
+    cursor: pointer;
+    position: relative;
+    bottom: 5vh;
+    animation: scale 2s ease-in-out infinite;
+
+    &-image {
+      transform: rotate(180deg);
+      width: 20vw;
+      max-width: 10rem;
+    }
+  }
+
+  &-enter {
+    display: flex;
+    opacity: 0;
+
+    &-active {
+      transition: 2000ms;
+      opacity: 1;
+    }
+
+    &-done {
+      display: flex;
+    }
+  }
+
+  &-exit {
+    display: flex;
+    opacity: 1;
+
+    &-active {
+      opacity: 0;
+      transform: translateY(-100rem);
+      transition: 500ms;
+    }
+  }
+}
+
+@keyframes scale {
+  from {
+    transform: scale(1)
+  }
+  50% {
+    transform: scale(1.1)
+  }
+  to {
+    transform: scale(1)
+  }
+}

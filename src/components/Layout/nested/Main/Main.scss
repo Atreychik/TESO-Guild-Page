@@ -1,0 +1,25 @@
+.main {
+  display: none;
+  position: relative;
+  z-index: 1;
+  width: 50rem;
+  margin: 0 auto;
+
+  &-enter {
+    display: block;
+    margin-top: 0vh;
+    opacity: 0;
+
+    &-active {
+      transition: 500ms;
+      margin-top: -95vh;
+      opacity: 1;
+    }
+
+    &-done {
+      display: block;
+      margin-top: -95vh;
+    }
+  }
+}
+

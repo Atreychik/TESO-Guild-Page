@@ -1,0 +1,28 @@
+@import './normalize.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+figure,
+body {
+  user-select: none;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #202020;
+  font-size: 1.6rem;
+  color: #fff;
+}
