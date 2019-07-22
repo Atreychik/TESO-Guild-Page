@@ -4,7 +4,7 @@ import './Dashboard.scss'
 class Dashboard extends Component {
   render () {
     return (
-      <div>
+      <div className='dashboard'>
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Id molestiae veniam, aut aliquid beatae inventore error, quaerat praesentium iure, quas harum dolorum dolorem eaque et laudantium quibusdam velit. Ad, quas.
         Quaerat praesentium veritatis fugiat assumenda reiciendis ratione enim aspernatur, tempora magni odio illo mollitia temporibus sunt corporis vitae explicabo tempore sit nihil rem laboriosam hic modi est? Consequatur, numquam porro.
         Cupiditate quasi iusto fugiat nihil delectus maiores voluptate, non sapiente, eius deserunt facere amet suscipit aut corrupti expedita quia? Excepturi distinctio omnis similique eligendi maxime cum temporibus officiis et quidem!

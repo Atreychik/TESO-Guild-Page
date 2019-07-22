@@ -1,7 +1,8 @@
 .navigation {
   overflow: hidden;
   position: sticky;
-  top: .5vh;
+  z-index: 100;
+  top: 2rem;
   border-radius: .5rem;
   background: linear-gradient(#202020 0%, #303030 20%, #303030 80%, #202020 100%);
   box-shadow: -.3rem .3rem .5rem .1rem #000;

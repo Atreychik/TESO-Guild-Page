@@ -5,6 +5,23 @@
   width: 90vw;
   max-width: 90rem;
   margin: 0 auto;
+  margin-bottom: 5vh;
+
+  &__container {
+    margin: 2rem -1rem;
+    display: flex;
+  }
+
+  &__content {
+    //10vh - top + bottom margin, 76px - footer + nav height, 4rem - margin for main section
+    min-height: calc(100vh - 10vh - 78px - 4rem); 
+    width: 100%;
+    margin: 0 1rem;
+    padding: 1rem 2rem;
+    border-radius: .5rem;
+    background: #303030aa;
+    box-shadow: -.3rem .3rem .5rem .1rem #000;
+  }
 
   &-enter {
     display: block;
