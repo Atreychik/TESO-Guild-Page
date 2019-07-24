@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import { Router, Switch, Route } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import { Layout } from './components'
-import { Dashboard } from './views'
+import {
+  Dashboard,
+  Login
+} from './views'
 import './styles/App.scss'
 
 class App extends Component {
@@ -14,6 +17,7 @@ class App extends Component {
         <Layout>
           <Switch>
             <Route exact path='/' component={Dashboard} />
+            <Route path='/login' component={Login} />
           </Switch>
         </Layout>
       </Router>
