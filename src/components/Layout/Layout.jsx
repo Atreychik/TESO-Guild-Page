@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { Loader } from '../../components'
 import {
   Header,
-  Main,
-  Welcome
+  Main
 } from './nested'
 
 class Layout extends Component {
@@ -39,9 +38,7 @@ class Layout extends Component {
     return (
     <>
       <Loader isLoading={isLoading} />
-      <Welcome>
-        <Header show={showHeader} onClick={this.showMain} />
-      </Welcome>
+      <Header show={showHeader} onClick={this.showMain} />
       <Main show={showMain} children={children} />
     </>)
   }
