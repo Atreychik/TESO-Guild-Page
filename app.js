@@ -5,6 +5,7 @@ const path = require('path')
 
 // requests
 const axios = require('axios')
+const discord = axios.create({ baseURL: 'https://discordapp.com/api/v6' })
 const bodyParser = require('body-parser')
 const formUrlEncoded = require('form-urlencoded').default
 
@@ -15,6 +16,8 @@ dotenv.config()
 // other variables
 const redirectUri = 'http://localhost:3000/login'
 const scope = 'identify guilds.join'
+const guildId = '453842402235514881'
+const channelId = '566371215665659913'
 
 // server config
 let app = express()
@@ -22,14 +25,11 @@ app.use(express.static(path.join(__dirname, 'build')))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-const port = process.env.PORT || '8080'
-app.set('port', port)
-
 // get Discord auth token for users
 app.post('/token/get', (request, response) => {
-  axios({
+  discord({
     method: 'POST',
-    url: 'https://discordapp.com/api/v6/oauth2/token',
+    url: `/oauth2/token`,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
@@ -42,15 +42,15 @@ app.post('/token/get', (request, response) => {
       scope: scope
     })
   })
-    .then(res => response.send(JSON.stringify(res.data)))
-    .catch(err => response.send(JSON.stringify(err.response.data)))
+    .then(res => response.json(res.data))
+    .catch(err => response.json(err.response.data))
 })
 
 // refresh Discord auth token
 app.post('/token/refresh', (request, response) => {
-  axios({
+  discord({
     method: 'POST',
-    url: 'https://discordapp.com/api/v6/oauth2/token',
+    url: `/oauth2/token`,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
@@ -63,10 +63,90 @@ app.post('/token/refresh', (request, response) => {
       scope: scope
     })
   })
-    .then(res => response.send(JSON.stringify(res.data)))
-    .catch(err => response.send(JSON.stringify(err.response.data)))
+    .then(res => response.json(res.data))
+    .catch(err => response.json(err.response.data))
+})
+
+app.get('/guild/roles', (request, response) => {
+  discord({
+    method: 'GET',
+    url: `/guilds/${guildId}/roles`,
+    headers: {
+      'Authorization': `Bot ${process.env.BOT_KEY}`
+    }
+  })
+    .then(res => response.json(res.data))
+    .catch(err => response.json(err.response.data))
+})
+
+app.put('/guild/members', (request, response) => {
+  discord({
+    method: 'PUT',
+    url: `/guilds/${guildId}/members/${request.body.userId}`,
+    headers: {
+      'Authorization': `Bot ${process.env.BOT_KEY}`
+    },
+    data: {
+      access_token: `Bearer ${request.body.token}`
+    }
+  })
+    .then(res => response.json(res.data))
+    .catch(err => response.json(err.response.data))
+})
+
+app.put('/guild/members/roles', (request, response) => {
+  discord({
+    method: 'PUT',
+    url: `/guilds/${guildId}/members/${request.body.userId}/roles/${request.body.roleId}`,
+    headers: {
+      'Authorization': `Bot ${process.env.BOT_KEY}`
+    }
+  })
+    .then(res => response.json(res.data))
+    .catch(err => response.json(err.response.data))
+})
+
+app.post('/guild/messages', (request, response) => {
+  discord({
+    method: 'POST',
+    url: `/channels/${channelId}/messages`,
+    headers: {
+      'Authorization': `Bot ${process.env.BOT_KEY}`
+    },
+    data: {
+      content: request.body.content
+    }
+  })
+    .then(res => response.json(res.data))
+    .catch(err => response.json(err.response.data))
+})
+
+app.put('/guild/messages/reactions', (request, response) => {
+  discord({
+    method: 'PUT',
+    url: `/channels/${channelId}/messages/${request.body.messageId}/reactions/${encodeURIComponent(request.body.emoji)}/@me`,
+    headers: {
+      'Authorization': `${request.body.tokenType || 'Bot'} ${request.body.token || process.env.BOT_KEY}`
+    }
+  })
+    .then(res => response.json(res))
+    .catch(err => response.json(err))
+})
+
+app.delete('/guild/messages/reactions', (request, response) => {
+  discord({
+    method: 'DELETE',
+    url: `/channels/${channelId}/messages/${request.body.messageId}/reactions/${encodeURIComponent(request.body.emoji)}/@me`,
+    headers: {
+      'Authorization': `${request.body.tokenType || 'Bot'} ${request.body.token || process.env.BOT_KEY}`
+    }
+  })
+    .then(res => response.json(res))
+    .catch(err => response.json(err))
 })
 
 // start server
+const port = process.env.PORT || '8080'
 const server = http.createServer(app)
+app.set('port', port)
 server.listen(port, () => console.log(`Running on localhost:${port}`))
