@@ -25,3 +25,8 @@ export const navigation = [
     exact: false
   }
 ]
+
+export const baseURL = {
+  app: 'http://localhost:8080',
+  discord: 'https://discordapp.com/api/v6'
+}

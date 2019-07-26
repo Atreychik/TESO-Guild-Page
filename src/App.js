@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import { Router, Switch, Route } from 'react-router-dom'
-import { createBrowserHistory } from 'history'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Switch, Route } from 'react-router-dom'
+import { actions } from './store'
 import { Layout } from './components'
 import {
   Dashboard,
@@ -9,22 +11,29 @@ import {
 import './styles/App.scss'
 
 class App extends Component {
-  render () {
-    const history = createBrowserHistory()
+  componentDidMount = () => {
+    const { checkAuthorization } = this.props
 
+    checkAuthorization()
+  }
+
+  render () {
     return (
-      <Router history={history}>
-        <Layout>
-          <Switch>
-            <Route exact path='/' component={Dashboard} />
-            <Route path='/login' component={Login} />
-          </Switch>
-        </Layout>
-      </Router>
+      <Layout>
+        <Switch>
+          <Route exact path='/' component={Dashboard} />
+          <Route path='/login' component={Login} />
+        </Switch>
+      </Layout>
     )
   }
 }
 
-// WTF!?
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  checkAuthorization: actions.auth.checkAuthorization
+}, dispatch)
 
-export default App
+export default connect(
+  null,
+  mapDispatchToProps
+)(App)

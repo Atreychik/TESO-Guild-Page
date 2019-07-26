@@ -4,6 +4,7 @@ const http = require('http')
 const path = require('path')
 
 // requests
+const cors = require('cors')
 const axios = require('axios')
 const discord = axios.create({ baseURL: 'https://discordapp.com/api/v6' })
 const bodyParser = require('body-parser')
@@ -21,6 +22,7 @@ const channelId = '566371215665659913'
 
 // server config
 let app = express()
+app.use(cors())
 app.use(express.static(path.join(__dirname, 'build')))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

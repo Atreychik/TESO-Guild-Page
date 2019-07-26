@@ -20,7 +20,7 @@ const Navigation = () => (
       <li className='navigation__item'>
         <a
           className='navigation__link navigation__link_discord'
-          href='https://discordapp.com/api/oauth2/authorize?client_id=564098556399452160&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fsignin&response_type=code&scope=identify%20guilds.join'>
+          href='https://discordapp.com/api/oauth2/authorize?client_id=564098556399452160&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin&response_type=code&scope=identify%20email%20guilds.join'>
           <span>LogIn</span>
           <img
             className='navigation__link-image'
