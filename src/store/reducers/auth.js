@@ -1,6 +1,7 @@
 import {
   SET_AUTHORIZED,
-  GET_USER_INFO
+  GET_USER_INFO,
+  LOGOUT
 } from '../types'
 
 const initialState = {
@@ -20,6 +21,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         user: action.payload
+      }
+    }
+    case LOGOUT: {
+      return {
+        ...state,
+        user: null,
+        isAuthorized: null
       }
     }
     default:

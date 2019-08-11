@@ -20,6 +20,25 @@ const scope = 'identify guilds.join'
 const guildId = '453842402235514881'
 const channelId = '566371215665659913'
 
+// init Firebase DB connection
+const firebaseAdmin = require('firebase-admin')
+firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert({
+    type: 'service_account',
+    project_id: 'dark-machines',
+    private_key_id: process.env.PRIVATE_KEY_ID,
+    private_key: process.env.PRIVATE_KEY,
+    client_email: 'firebase-adminsdk-glovo@dark-machines.iam.gserviceaccount.com',
+    client_id: process.env.CLIENT_ID,
+    auth_uri: 'https://accounts.google.com/o/oauth2/auth',
+    token_uri: 'https://oauth2.googleapis.com/token',
+    auth_provider_x509_cert_url: process.env.AUTH_CERT_URL,
+    client_x509_cert_url: process.env.CLIENT_CERT_URL
+  }),
+  databaseURL: 'https://dark-machines.firebaseio.com'
+})
+const fb = firebaseAdmin.firestore()
+
 // server config
 let app = express()
 app.use(cors())
@@ -44,7 +63,30 @@ app.post('/token/get', (request, response) => {
       scope: scope
     })
   })
-    .then(res => response.json(res.data))
+    .then(res => {
+      discord({
+        method: 'GET',
+        url: `/users/@me`,
+        headers: {
+          'Authorization': `${res.data.token_type} ${res.data.access_token}`
+        }
+      })
+        .then(res => {
+          fb.collection('members').doc(res.data.id).get()
+            .then(member => {
+              if (!member.exists) {
+                fb.collection('members').doc(res.data.id).set({
+                  username: res.data.username,
+                  id: res.data.id,
+                  avatar: res.data.avatar ? `https://cdn.discordapp.com/avatars/${res.data.id}/${res.data.avatar}?size=256` : null,
+                  email: res.data.email
+                })
+              }
+            })
+        })
+        .catch(err => console.log(err))
+      response.json(res.data)
+    })
     .catch(err => response.json(err.response.data))
 })
 
@@ -67,6 +109,44 @@ app.post('/token/refresh', (request, response) => {
   })
     .then(res => response.json(res.data))
     .catch(err => response.json(err.response.data))
+})
+
+app.get('/events', async (request, response) => {
+  let eventsList = []
+  await fb.collection('events').get()
+    .then((events) => {
+      events.forEach((event) => {
+        let eventObj = Object.assign({
+          authorId: event.data().authorId,
+          eventDate: event.data().eventDate,
+          message: event.data().message,
+          messageId: event.data().messageId
+        })
+
+        eventsList.push(eventObj)
+      })
+    })
+
+  response.json(eventsList)
+})
+
+app.get('/members', async (request, response) => {
+  let membersList = []
+  await fb.collection('members').get()
+    .then((members) => {
+      members.forEach((member) => {
+        let memberObj = Object.assign({
+          id: member.data().id,
+          username: member.data().username,
+          email: member.data().email,
+          avatar: member.data().avatar
+        })
+
+        membersList.push(memberObj)
+      })
+    })
+
+  response.json(membersList)
 })
 
 app.get('/guild/roles', (request, response) => {

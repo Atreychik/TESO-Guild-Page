@@ -6,7 +6,9 @@ import { actions } from './store'
 import { Layout } from './components'
 import {
   Dashboard,
-  Login
+  Login,
+  Events,
+  Members
 } from './views'
 import './styles/App.scss'
 
@@ -22,6 +24,8 @@ class App extends Component {
       <Layout>
         <Switch>
           <Route exact path='/' component={Dashboard} />
+          <Route path='/events' component={Events} />
+          <Route path='/members' component={Members} />
           <Route path='/login' component={Login} />
         </Switch>
       </Layout>

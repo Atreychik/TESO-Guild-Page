@@ -1,9 +1,6 @@
 .navigation {
   overflow: hidden;
-  position: sticky;
-  z-index: 100;
-  top: 2rem;
-  border-radius: .5rem;
+  border-radius: .5rem .5rem 0 0;
   background: linear-gradient(#202020 0%, #303030 20%, #303030 80%, #202020 100%);
   box-shadow: -.3rem .3rem .5rem .1rem #000;
 
@@ -15,7 +12,7 @@
   }
 
   &__item {
-    &:last-child {
+    &_login {
       margin-left: auto;
     }
   }

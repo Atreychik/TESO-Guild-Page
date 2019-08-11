@@ -1,7 +1,8 @@
 import { api } from '../../services'
 import {
   SET_AUTHORIZED,
-  GET_USER_INFO
+  GET_USER_INFO,
+  LOGOUT
 } from '../types'
 
 const login = (code) => (dispatch) => {
@@ -13,6 +14,11 @@ const login = (code) => (dispatch) => {
         payload: true
       })
     })
+}
+
+const logout = () => (dispatch) => {
+  localStorage.clear()
+  dispatch({ type: LOGOUT })
 }
 
 const getUser = (token) => (dispatch) => {
@@ -52,6 +58,7 @@ const checkAuthorization = () => (dispatch) => {
 
 export {
   login,
+  logout,
   getUser,
   checkAuthorization
 }
