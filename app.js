@@ -15,8 +15,9 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 // other variables
-const redirectUri = 'http://localhost:3000/login'
-const scope = 'identify guilds.join'
+// const redirectUri = 'http://localhost:3000/login'
+const redirectUri = 'https://teso-guild-page.herokuapp.com/login'
+const scope = 'identify email guilds.join'
 const guildId = '453842402235514881'
 const channelId = '566371215665659913'
 

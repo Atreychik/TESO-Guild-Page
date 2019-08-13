@@ -27,6 +27,7 @@ export const navigation = [
 ]
 
 export const baseURL = {
-  app: 'http://localhost:8080',
+  // app: 'http://localhost:8080',
+  app: 'https://teso-guild-page.herokuapp.com/login',
   discord: 'https://discordapp.com/api/v6'
 }
