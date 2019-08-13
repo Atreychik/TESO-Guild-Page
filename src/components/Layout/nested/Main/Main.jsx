@@ -10,14 +10,18 @@ import './Main.scss'
 const Main = ({ show, children }) => (
   <CSSTransition in={show} timeout={500} classNames='main'>
     <div className='main'>
-      <Navigation />
-      <div className='main__container'>
-        <main className='main__content'>
-          {children}
-        </main>
-        <Profile />
+      <div className='main__inner'>
+        <Navigation />
+        <div className='main__container'>
+          <div className='main__container-inner'>
+            <main className='main__content'>
+              {children}
+            </main>
+          </div>
+          <Profile />
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   </CSSTransition>
 )

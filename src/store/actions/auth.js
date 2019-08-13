@@ -8,7 +8,6 @@ import {
 const login = (code) => (dispatch) => {
   return api.discord.login(code)
     .then(response => {
-      dispatch(getUser(`${response.token_type} ${response.access_token}`))
       dispatch({
         type: SET_AUTHORIZED,
         payload: true
@@ -21,8 +20,8 @@ const logout = () => (dispatch) => {
   dispatch({ type: LOGOUT })
 }
 
-const getUser = (token) => (dispatch) => {
-  return api.discord.getUserInfo(token)
+const getUser = (id) => (dispatch) => {
+  return api.discord.getUserInfo(id)
     .then(response => {
       dispatch({
         type: GET_USER_INFO,
@@ -31,13 +30,9 @@ const getUser = (token) => (dispatch) => {
     })
 }
 
-const checkAuthorization = () => (dispatch) => {
-  const token = localStorage.getItem('access_token')
-  const tokenType = localStorage.getItem('token_type')
-  const refreshToken = localStorage.getItem('refresh_token')
-
+const checkAuthorization = (token, refreshToken, id) => (dispatch) => {
   if (token) {
-    dispatch(getUser(`${tokenType} ${token}`))
+    dispatch(getUser(id))
     dispatch({
       type: SET_AUTHORIZED,
       payload: true
@@ -46,7 +41,7 @@ const checkAuthorization = () => (dispatch) => {
     if (refreshToken) {
       api.discord.refreshToken(refreshToken)
         .then(response => {
-          dispatch(getUser(`${response.token_type} ${response.access_token}`))
+          dispatch(getUser(id))
           dispatch({
             type: SET_AUTHORIZED,
             payload: true

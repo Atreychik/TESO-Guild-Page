@@ -4,9 +4,9 @@ import { bindActionCreators } from 'redux'
 import { Switch, Route } from 'react-router-dom'
 import { actions } from './store'
 import { Layout } from './components'
+import history from './history'
 import {
   Dashboard,
-  Login,
   Events,
   Members
 } from './views'
@@ -14,9 +14,22 @@ import './styles/App.scss'
 
 class App extends Component {
   componentDidMount = () => {
-    const { checkAuthorization } = this.props
+    const { checkAuthorization, login, getUser } = this.props
+    const params = new URLSearchParams(window.location.search)
+    const code = params.get('code')
+    const token = localStorage.getItem('access_token')
+    const refreshToken = localStorage.getItem('refresh_token')
+    const id = localStorage.getItem('id')
 
-    checkAuthorization()
+    if (code) {
+      login(code)
+        .then(() => {
+          getUser(localStorage.getItem('id'))
+          history.push('/')
+        })
+    } else {
+      checkAuthorization(token, refreshToken, id)
+    }
   }
 
   render () {
@@ -26,7 +39,6 @@ class App extends Component {
           <Route exact path='/' component={Dashboard} />
           <Route path='/events' component={Events} />
           <Route path='/members' component={Members} />
-          <Route path='/login' component={Login} />
         </Switch>
       </Layout>
     )
@@ -34,7 +46,9 @@ class App extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  checkAuthorization: actions.auth.checkAuthorization
+  checkAuthorization: actions.auth.checkAuthorization,
+  login: actions.auth.login,
+  getUser: actions.auth.getUser
 }, dispatch)
 
 export default connect(

@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { navigation } from '../../../../../../constants'
+import { navigation, baseURL } from '../../../../../../constants'
 import './Navigation.scss'
 
 const Navigation = ({ isAuthorized, logout }) => (
@@ -22,7 +22,7 @@ const Navigation = ({ isAuthorized, logout }) => (
           ? <span className='navigation__link' onClick={logout}>Log Out</span>
           : <a
             className='navigation__link navigation__link_discord'
-            href='https://discordapp.com/api/oauth2/authorize?client_id=564098556399452160&redirect_uri=https%3A%2F%2Fteso-guild-page.herokuapp.com%2Flogin&response_type=code&scope=identify%20email%20guilds.join'>
+            href={baseURL.authURI}>
             <span>LogIn</span>
             <img
               className='navigation__link-image'

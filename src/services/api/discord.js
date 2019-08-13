@@ -29,13 +29,10 @@ const refreshToken = (token) => {
     })
 }
 
-const getUserInfo = (token) => {
+const getUserInfo = (id) => {
   return axios({
     method: 'GET',
-    url: `${baseURL.discord}/users/@me`,
-    headers: {
-      'Authorization': token
-    }
+    url: `${baseURL.app}/members/${id}`
   })
 }
 

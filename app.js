@@ -15,8 +15,8 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 // other variables
-// const redirectUri = 'http://localhost:3000/login'
-const redirectUri = 'https://teso-guild-page.herokuapp.com/login'
+// const redirectUri = 'http://localhost:3000'
+const redirectUri = 'https://teso-guild-page.herokuapp.com'
 const scope = 'identify email guilds.join'
 const guildId = '453842402235514881'
 const channelId = '566371215665659913'
@@ -65,6 +65,7 @@ app.post('/token/get', (request, response) => {
     })
   })
     .then(res => {
+      let authObj = res.data
       discord({
         method: 'GET',
         url: `/users/@me`,
@@ -72,21 +73,22 @@ app.post('/token/get', (request, response) => {
           'Authorization': `${res.data.token_type} ${res.data.access_token}`
         }
       })
-        .then(res => {
-          fb.collection('members').doc(res.data.id).get()
+        .then(async res => {
+          authObj = { ...authObj, id: res.data.id }
+          await fb.collection('members').doc(res.data.id).get()
             .then(member => {
               if (!member.exists) {
                 fb.collection('members').doc(res.data.id).set({
                   username: res.data.username,
                   id: res.data.id,
-                  avatar: res.data.avatar ? `https://cdn.discordapp.com/avatars/${res.data.id}/${res.data.avatar}?size=256` : null,
-                  email: res.data.email
+                  email: res.data.email,
+                  avatar: res.data.avatar ? `https://cdn.discordapp.com/avatars/${res.data.id}/${res.data.avatar}?size=256` : null
                 })
               }
             })
+          response.json(authObj)
         })
         .catch(err => console.log(err))
-      response.json(res.data)
     })
     .catch(err => response.json(err.response.data))
 })
@@ -148,6 +150,14 @@ app.get('/members', async (request, response) => {
     })
 
   response.json(membersList)
+})
+
+app.get('/members/:id', (request, response) => {
+  fb.doc(`members/${request.params.id}`).get()
+    .then(doc => {
+      response.json(doc.data())
+    })
+    .catch(err => response.json(err.response.data))
 })
 
 app.get('/guild/roles', (request, response) => {

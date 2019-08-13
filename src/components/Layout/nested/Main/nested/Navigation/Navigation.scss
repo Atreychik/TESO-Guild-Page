@@ -9,9 +9,12 @@
     margin: 0;
     padding: 0;
     list-style: none;
+    overflow: scroll;
   }
 
   &__item {
+    white-space: nowrap;
+    
     &_login {
       margin-left: auto;
     }
