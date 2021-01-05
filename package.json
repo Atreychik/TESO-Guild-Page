@@ -4,7 +4,7 @@
   "private": true,
   "main": "app.js",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "cors": "^2.8.5",
     "discord.js": "^11.4.2",
     "dotenv": "^7.0.0",
